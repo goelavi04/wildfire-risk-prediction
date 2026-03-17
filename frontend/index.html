@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>California Wildfire Risk Predictor</title>
+  <link rel="stylesheet" href="/static/style.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <span class="fire-icon">🔥</span>
+      <div>
+        <div class="nav-title">WildfireAI</div>
+        <div class="nav-sub">California · by Aviral Goel</div>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="#home"      class="nav-link active" onclick="showPage('home')">Home</a>
+      <a href="#predictor" class="nav-link"         onclick="showPage('predictor')">Predictor</a>
+      <a href="#map"       class="nav-link"         onclick="showPage('map')">Risk Map</a>
+      <a href="#models"    class="nav-link"         onclick="showPage('models')">Models</a>
+      <a href="#about"     class="nav-link"         onclick="showPage('about')">About</a>
+    </div>
+    <div class="nav-badge">
+      <span class="live-dot"></span> LIVE
+    </div>
+  </nav>
+
+  <!-- PAGES -->
+  <main>
+
+    <!-- HOME PAGE -->
+    <section id="page-home" class="page active">
+      <div class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+          <div class="hero-tag">Machine Learning · XGBoost · Random Forest</div>
+          <h1 class="hero-title">California Wildfire<br><span class="gradient-text">Risk Prediction</span></h1>
+          <p class="hero-sub">Predicting fire risk using 40 years of California weather data.<br>Built with XGBoost & Random Forest · 14,988 records · 86.3% ROC-AUC</p>
+          <div class="hero-btns">
+            <button class="btn-primary" onclick="showPage('predictor')">⚡ Try Live Predictor</button>
+            <button class="btn-secondary" onclick="showPage('map')">🗺️ View Risk Map</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats row -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-val fire-text">80.0%</div>
+          <div class="stat-lbl">XGBoost Accuracy</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val orange-text">0.863</div>
+          <div class="stat-lbl">ROC-AUC Score</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val yellow-text">14,988</div>
+          <div class="stat-lbl">Training Records</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val green-text">1984–2025</div>
+          <div class="stat-lbl">Data Range</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val purple-text">13</div>
+          <div class="stat-lbl">Features Used</div>
+        </div>
+      </div>
+
+      <!-- Features section -->
+      <div class="section">
+        <div class="section-header">
+          <h2>Top Fire Risk Factors</h2>
+          <p>What the model learned from 40 years of California data</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-rank">01</div>
+            <div class="feature-name">Season</div>
+            <div class="feature-bar-wrap">
+              <div class="feature-bar" style="width:100%;background:#E63B2E"></div>
+            </div>
+            <div class="feature-score">26.2%</div>
+            <div class="feature-desc">Summer months drive the highest fire risk</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-rank">02</div>
+            <div class="feature-name">Min Temperature</div>
+            <div class="feature-bar-wrap">
+              <div class="feature-bar" style="width:91%;background:#F47421"></div>
+            </div>
+            <div class="feature-score">23.9%</div>
+            <div class="feature-desc">Warm nights prevent overnight cooling</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-rank">03</div>
+            <div class="feature-name">Day of Year</div>
+            <div class="feature-bar-wrap">
+              <div class="feature-bar" style="width:28%;background:#F9C21A"></div>
+            </div>
+            <div class="feature-score">7.2%</div>
+            <div class="feature-desc">Fire season peaks Jul–Sep</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-rank">04</div>
+            <div class="feature-name">Month</div>
+            <div class="feature-bar-wrap">
+              <div class="feature-bar" style="width:27%;background:#F9C21A"></div>
+            </div>
+            <div class="feature-score">7.1%</div>
+            <div class="feature-desc">Strong seasonal pattern in fire starts</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-rank">05</div>
+            <div class="feature-name">Precipitation</div>
+            <div class="feature-bar-wrap">
+              <div class="feature-bar" style="width:26%;background:#4CAF50"></div>
+            </div>
+            <div class="feature-score">6.8%</div>
+            <div class="feature-desc">Recent rain dramatically lowers risk</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-rank">06</div>
+            <div class="feature-name">Max Temperature</div>
+            <div class="feature-bar-wrap">
+              <div class="feature-bar" style="width:23%;background:#4CAF50"></div>
+            </div>
+            <div class="feature-score">6.1%</div>
+            <div class="feature-desc">Extreme heat dries out vegetation</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREDICTOR PAGE -->
+    <section id="page-predictor" class="page">
+      <div class="page-header">
+        <h1>⚡ Live Fire Risk Predictor</h1>
+        <p>Enter current weather conditions — our XGBoost + Random Forest ensemble predicts fire risk instantly</p>
+      </div>
+
+      <div class="predictor-layout">
+        <div class="predictor-inputs card">
+          <div class="card-title">Weather Conditions</div>
+
+          <div class="input-group">
+            <label>Maximum Temperature (°F)</label>
+            <div class="slider-row">
+              <input type="range" min="40" max="130" value="95"
+                     id="max_temp" oninput="updateSlider('max_temp','max_temp_val')"/>
+              <span class="slider-val" id="max_temp_val">95°F</span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>Minimum Temperature (°F)</label>
+            <div class="slider-row">
+              <input type="range" min="20" max="100" value="60"
+                     id="min_temp" oninput="updateSlider('min_temp','min_temp_val')"/>
+              <span class="slider-val" id="min_temp_val">60°F</span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>Wind Speed (mph)</label>
+            <div class="slider-row">
+              <input type="range" min="0" max="80" value="25"
+                     id="wind_speed" oninput="updateSlider('wind_speed','wind_speed_val')"/>
+              <span class="slider-val" id="wind_speed_val">25 mph</span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>Precipitation (inches)</label>
+            <div class="slider-row">
+              <input type="range" min="0" max="5" value="0" step="0.1"
+                     id="precipitation" oninput="updateSlider('precipitation','precip_val', ' in')"/>
+              <span class="slider-val" id="precip_val">0.0 in</span>
+            </div>
+          </div>
+
+          <div class="input-row-2">
+            <div class="input-group">
+              <label>Month</label>
+              <select id="month" class="select-input">
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7" selected>July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label>Season</label>
+              <select id="season" class="select-input">
+                <option value="0">Winter</option>
+                <option value="1">Spring</option>
+                <option value="2" selected>Summer</option>
+                <option value="3">Fall</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>Year</label>
+            <input type="number" id="year" value="2024"
+                   min="1984" max="2030" class="number-input"/>
+          </div>
+
+          <button class="predict-btn" onclick="runPrediction()">
+            🔥 Predict Fire Risk
+          </button>
+        </div>
+
+        <!-- Result panel -->
+        <div class="predictor-result">
+          <div id="result-box" class="result-box card">
+            <div class="result-placeholder">
+              <div style="font-size:64px">🔥</div>
+              <div style="font-size:18px;color:#8A8A9A;margin-top:12px">
+                Enter conditions and click<br>Predict Fire Risk
+              </div>
+            </div>
+          </div>
+
+          <div class="result-models card" id="model-scores" style="display:none">
+            <div class="card-title">Individual Model Scores</div>
+            <div class="model-score-row">
+              <span class="model-name">XGBoost</span>
+              <div class="model-bar-wrap">
+                <div class="model-bar" id="xgb-bar"></div>
+              </div>
+              <span class="model-pct" id="xgb-pct">—</span>
+            </div>
+            <div class="model-score-row">
+              <span class="model-name">Random Forest</span>
+              <div class="model-bar-wrap">
+                <div class="model-bar" id="rf-bar"></div>
+              </div>
+              <span class="model-pct" id="rf-pct">—</span>
+            </div>
+            <div class="model-score-row">
+              <span class="model-name">Ensemble</span>
+              <div class="model-bar-wrap">
+                <div class="model-bar" id="ens-bar"></div>
+              </div>
+              <span class="model-pct" id="ens-pct">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAP PAGE -->
+    <section id="page-map" class="page">
+      <div class="page-header">
+        <h1>🗺️ California Fire Risk Map</h1>
+        <p>Live risk predictions across California counties · Click any marker for details</p>
+      </div>
+      <div class="map-layout">
+        <div class="map-wrap card">
+          <div id="map"></div>
+        </div>
+        <div class="map-sidebar">
+          <div class="card">
+            <div class="card-title">Risk Legend</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#E63B2E"></span>Extreme (≥75%)</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#F47421"></span>High (55–75%)</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#F9C21A"></span>Moderate (35–55%)</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#4CAF50"></span>Low (&lt;35%)</div>
+          </div>
+          <div class="card" style="margin-top:16px">
+            <div class="card-title">County Risk Table</div>
+            <div id="county-table" class="county-table-wrap"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODELS PAGE -->
+    <section id="page-models" class="page">
+      <div class="page-header">
+        <h1>📊 Model Performance</h1>
+        <p>XGBoost vs Random Forest · Trained on California Weather & Fire Dataset 1984–2025</p>
+      </div>
+
+      <div class="models-grid">
+        <div class="card model-card-box">
+          <div class="model-header">
+            <div>
+              <div class="model-title">XGBoost</div>
+              <div class="model-params">n_estimators=300 · max_depth=6 · lr=0.05</div>
+            </div>
+            <span class="badge-best">Best Model</span>
+          </div>
+          <div class="metrics-row">
+            <div class="metric-chip"><div class="mc-val orange-text">80.0%</div><div class="mc-lbl">Accuracy</div></div>
+            <div class="metric-chip"><div class="mc-val orange-text">0.720</div><div class="mc-lbl">Precision</div></div>
+            <div class="metric-chip"><div class="mc-val orange-text">0.655</div><div class="mc-lbl">Recall</div></div>
+            <div class="metric-chip"><div class="mc-val orange-text">0.686</div><div class="mc-lbl">F1</div></div>
+            <div class="metric-chip"><div class="mc-val orange-text">0.863</div><div class="mc-lbl">ROC-AUC</div></div>
+          </div>
+        </div>
+
+        <div class="card model-card-box">
+          <div class="model-header">
+            <div>
+              <div class="model-title">Random Forest</div>
+              <div class="model-params">n_estimators=200 · max_depth=12 · min_samples=5</div>
+            </div>
+            <span class="badge-strong">Strong</span>
+          </div>
+          <div class="metrics-row">
+            <div class="metric-chip"><div class="mc-val yellow-text">79.3%</div><div class="mc-lbl">Accuracy</div></div>
+            <div class="metric-chip"><div class="mc-val yellow-text">0.703</div><div class="mc-lbl">Precision</div></div>
+            <div class="metric-chip"><div class="mc-val yellow-text">0.651</div><div class="mc-lbl">Recall</div></div>
+            <div class="metric-chip"><div class="mc-val yellow-text">0.676</div><div class="mc-lbl">F1</div></div>
+            <div class="metric-chip"><div class="mc-val yellow-text">0.857</div><div class="mc-lbl">ROC-AUC</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="card">
+          <div class="card-title">Comparison Chart</div>
+          <canvas id="compChart" height="280"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-title">ROC Curve</div>
+          <canvas id="rocChart" height="280"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-title">XGBoost Confusion Matrix</div>
+          <canvas id="cmChart" height="280"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-title">What These Metrics Mean</div>
+          <div class="metrics-explain">
+            <div class="explain-row">
+              <span class="explain-label">Accuracy</span>
+              <span class="explain-text">Overall correct predictions out of all predictions made</span>
+            </div>
+            <div class="explain-row">
+              <span class="explain-label">Precision</span>
+              <span class="explain-text">When model says fire — how often it is actually right</span>
+            </div>
+            <div class="explain-row">
+              <span class="explain-label">Recall</span>
+              <span class="explain-text">Of all real fire days — how many did the model catch</span>
+            </div>
+            <div class="explain-row">
+              <span class="explain-label">F1 Score</span>
+              <span class="explain-text">Balance between Precision and Recall</span>
+            </div>
+            <div class="explain-row">
+              <span class="explain-label">ROC-AUC</span>
+              <span class="explain-text">0.86 = excellent ability to separate fire vs no-fire days</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT PAGE -->
+    <section id="page-about" class="page">
+      <div class="page-header">
+        <h1>About This Project</h1>
+        <p>California Wildfire Risk Prediction using Machine Learning</p>
+      </div>
+      <div class="about-layout">
+        <div class="card about-card">
+          <div class="card-title">👨‍💻 Developer</div>
+          <div class="about-name">Aviral Goel</div>
+          <div class="about-detail">Machine Learning Project</div>
+          <div class="about-detail">California Wildfire Risk Prediction</div>
+        </div>
+        <div class="card about-card">
+          <div class="card-title">📊 Dataset</div>
+          <div class="about-detail"><b>Source:</b> Kaggle — Aleen Khaled</div>
+          <div class="about-detail"><b>Name:</b> CA Weather & Fire Dataset</div>
+          <div class="about-detail"><b>Period:</b> 1984–2025</div>
+          <div class="about-detail"><b>Records:</b> 14,988</div>
+          <div class="about-detail"><b>Features:</b> 13 weather variables</div>
+        </div>
+        <div class="card about-card">
+          <div class="card-title">🤖 Models</div>
+          <div class="about-detail"><b>XGBoost:</b> 300 trees · depth 6</div>
+          <div class="about-detail"><b>Random Forest:</b> 200 trees · depth 12</div>
+          <div class="about-detail"><b>Validation:</b> 5-fold cross validation</div>
+          <div class="about-detail"><b>Split:</b> 80% train · 20% test</div>
+        </div>
+        <div class="card about-card">
+          <div class="card-title">🛠️ Tech Stack</div>
+          <div class="about-detail"><b>Backend:</b> Python · FastAPI</div>
+          <div class="about-detail"><b>ML:</b> XGBoost · Scikit-learn</div>
+          <div class="about-detail"><b>Map:</b> Leaflet.js · Folium</div>
+          <div class="about-detail"><b>Charts:</b> Chart.js</div>
+          <div class="about-detail"><b>Frontend:</b> HTML · CSS · JS</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
