@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>California Wildfire Risk Predictor</title>
+  <title> Wildfire Risk Predictor</title>
   <link rel="stylesheet" href="/static/style.css"/>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -18,7 +18,7 @@
       <span class="fire-icon">🔥</span>
       <div>
         <div class="nav-title">WildfireAI</div>
-        <div class="nav-sub">California · by Aviral Goel</div>
+        <div class="nav-sub"> ~ by Aviral Goel</div>
       </div>
     </div>
     <div class="nav-links">
@@ -45,8 +45,8 @@
           <h1 class="hero-title">California Wildfire<br><span class="gradient-text">Risk Prediction</span></h1>
           <p class="hero-sub">Predicting fire risk using 40 years of California weather data.<br>Built with XGBoost & Random Forest · 14,988 records · 86.3% ROC-AUC</p>
           <div class="hero-btns">
-            <button class="btn-primary" onclick="showPage('predictor')">⚡ Try Live Predictor</button>
-            <button class="btn-secondary" onclick="showPage('map')">🗺️ View Risk Map</button>
+            <button class="btn-primary" onclick="showPage('predictor')"> Try Live Predictor</button>
+            <button class="btn-secondary" onclick="showPage('map')"> View Risk Map</button>
           </div>
         </div>
       </div>
@@ -143,7 +143,7 @@
     <!-- PREDICTOR PAGE -->
     <section id="page-predictor" class="page">
       <div class="page-header">
-        <h1>⚡ Live Fire Risk Predictor</h1>
+        <h1> Live Fire Risk Predictor</h1>
         <p>Enter current weather conditions — our XGBoost + Random Forest ensemble predicts fire risk instantly</p>
       </div>
 
@@ -223,7 +223,7 @@
           </div>
 
           <button class="predict-btn" onclick="runPrediction()">
-            🔥 Predict Fire Risk
+             Predict Fire Risk
           </button>
         </div>
 
@@ -231,7 +231,7 @@
         <div class="predictor-result">
           <div id="result-box" class="result-box card">
             <div class="result-placeholder">
-              <div style="font-size:64px">🔥</div>
+              <div style="font-size:64px"></div>
               <div style="font-size:18px;color:#8A8A9A;margin-top:12px">
                 Enter conditions and click<br>Predict Fire Risk
               </div>
@@ -269,7 +269,7 @@
     <!-- MAP PAGE -->
     <section id="page-map" class="page">
       <div class="page-header">
-        <h1>🗺️ California Fire Risk Map</h1>
+        <h1> California Fire Risk Map</h1>
         <p>Live risk predictions across California counties · Click any marker for details</p>
       </div>
       <div class="map-layout">
@@ -295,7 +295,7 @@
     <!-- MODELS PAGE -->
     <section id="page-models" class="page">
       <div class="page-header">
-        <h1>📊 Model Performance</h1>
+        <h1> Model Performance</h1>
         <p>XGBoost vs Random Forest · Trained on California Weather & Fire Dataset 1984–2025</p>
       </div>
 
@@ -384,13 +384,13 @@
       </div>
       <div class="about-layout">
         <div class="card about-card">
-          <div class="card-title">👨‍💻 Developer</div>
+          <div class="card-title"> Developer</div>
           <div class="about-name">Aviral Goel</div>
           <div class="about-detail">Machine Learning Project</div>
           <div class="about-detail">California Wildfire Risk Prediction</div>
         </div>
         <div class="card about-card">
-          <div class="card-title">📊 Dataset</div>
+          <div class="card-title"> Dataset</div>
           <div class="about-detail"><b>Source:</b> Kaggle — Aleen Khaled</div>
           <div class="about-detail"><b>Name:</b> CA Weather & Fire Dataset</div>
           <div class="about-detail"><b>Period:</b> 1984–2025</div>
@@ -398,14 +398,14 @@
           <div class="about-detail"><b>Features:</b> 13 weather variables</div>
         </div>
         <div class="card about-card">
-          <div class="card-title">🤖 Models</div>
+          <div class="card-title"> Models</div>
           <div class="about-detail"><b>XGBoost:</b> 300 trees · depth 6</div>
           <div class="about-detail"><b>Random Forest:</b> 200 trees · depth 12</div>
           <div class="about-detail"><b>Validation:</b> 5-fold cross validation</div>
           <div class="about-detail"><b>Split:</b> 80% train · 20% test</div>
         </div>
         <div class="card about-card">
-          <div class="card-title">🛠️ Tech Stack</div>
+          <div class="card-title"> Tech Stack</div>
           <div class="about-detail"><b>Backend:</b> Python · FastAPI</div>
           <div class="about-detail"><b>ML:</b> XGBoost · Scikit-learn</div>
           <div class="about-detail"><b>Map:</b> Leaflet.js · Folium</div>
